@@ -1,5 +1,5 @@
-
 export const signupFormInitialState = {
+  signupForm: {
     name: {
       value: "",
       validation: {
@@ -54,6 +54,8 @@ export const signupFormInitialState = {
       valid: false,
       touched: false,
     },
-  };
-
-  
+    roles: ["USER"],
+  },
+  formIsValid: false,
+  // roles: ["USER"],
+};

@@ -4,6 +4,7 @@ export const TRANSLATIONS_AR = {
         "SignUp": "التسجيل",
         "SignIn": "تسجيل الدخول",
         "Profile": "الشخصيه",
+        "Logout": "الخروج",
         "AddCompetition": "إضافة المنافسة",
     },
     "SignIn": {

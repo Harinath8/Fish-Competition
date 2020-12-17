@@ -5,35 +5,35 @@ import {
   REGISTER_ERROR,
 } from "../../actionTypes";
 
-export const register = ({
-  email,
-  password,
-  username,
-  lastName: last_name,
-  firstName: first_name,
-}) => (dispatch) => {
+export const register = ({ username, password, email, civilid, telephone, roles }) => (dispatch) => {
   dispatch({
     type: REGISTER_LOADING,
   });
 
   axiosInstance()
-    .post("/auth/register", {
-      email,
-      password,
-      username,
-      last_name,
-      first_name,
-    })
-    .then((res) => {
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data,
-      });
+    .post("/signup", { username, password, email, civilid, telephone, roles })
+    .then((response) => {
+      if(response.data.status === 201) {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: response.data,
+        });
+      } else if(response.data.status === 601) {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: response.data,
+        });
+      } else {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: response.data,
+        });
+      }
     })
     .catch((err) => {
       dispatch({
         type: REGISTER_ERROR,
-        payload: err.response ? err.response.data : "COULD NOT CONNECT",
+        payload: err.response ? err.response.data.message : "COULD NOT CONNECT",
       });
     });
 };

@@ -16,6 +16,8 @@ import PasswordInput from "../../components/PasswordInput/PasswordInput";
 import { checkValidity } from "../../utils/validations";
 import { updateObject } from "../../utils/updateObject";
 import { GlobalContext } from "../../context/Provider";
+import { register } from "../../context/actions/auth/register";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,10 +42,12 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp() {
   const classes = useStyles();
 
+  // const history = useHistory();
+  
   const { t } = useTranslation();
-  const { direction } = useContext(GlobalContext);
+  const { direction, authDispatch, authState: { auth: { data, error } } } = useContext(GlobalContext);
 
-  const [signupForm, setSignupForm] = useState(signupFormInitialState);
+  const [signupForm, setSignupForm] = useState(signupFormInitialState.signupForm);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
@@ -58,7 +62,7 @@ export default function SignUp() {
     // console.log(event.target.name, event.target.value);
     const validation = checkValidity(event.target.value, signupForm[event.target.name].validation, t);
 
-    const updatedDetails = updateObject(signupForm, {
+    const updatedSignupForm = updateObject(signupForm, {
       [event.target.name]: updateObject(signupForm[event.target.name], {
         value: event.target.value,
         valid: validation.valid,
@@ -66,13 +70,21 @@ export default function SignUp() {
         touched: true,
       }),
     });
-    setSignupForm(updatedDetails);
+
+    let formIsValid = true;
+    for (let inputIdentifier in updatedSignupForm) {
+      
+      if(updatedSignupForm[inputIdentifier].hasOwnProperty("valid")){
+        formIsValid = updatedSignupForm[inputIdentifier].valid && formIsValid;
+      }
+    }
+
+    setSignupForm({ ...updatedSignupForm, formIsValid: formIsValid});
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (!signupForm.name.valid && !signupForm.password.valid && 
-      !signupForm.email.valid && !signupForm.phoneNo.valid && !signupForm.civilId.valid) {
+    if (!signupForm.formIsValid) {
         const updatedForm = {
             ...signupForm,
             name: { ...signupForm.name, touched: true },
@@ -84,10 +96,26 @@ export default function SignUp() {
         setSignupForm(updatedForm);
     }
 
-    if (signupForm.name.valid && signupForm.password.valid) {
-       
+    if(signupForm.formIsValid) {
+      register({
+        username: signupForm.name.value,
+        password: signupForm.password.value,
+        email: signupForm.email.value,
+        civilid: signupForm.civilId.value,
+        telephone: signupForm.phoneNo.value,
+        roles: signupForm.roles
+      })(authDispatch);
     }
-}
+  }
+
+  useEffect(() => {
+    // if (data && data.status === 201) {
+    //   history.push("/signin");
+    // }
+    if(data) {
+      setSignupForm(signupFormInitialState.signupForm);
+    }
+  }, [data]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -96,6 +124,11 @@ export default function SignUp() {
         <Avatar className={classes.avatar}></Avatar>
         <Typography component="h1" variant="h5">
           {t("SignUp.InputFields.SignUp")}
+        </Typography>
+
+        <Typography component="h1" variant="h5">
+          {error ? error : null}
+          {data ? data.message : null}
         </Typography>
 
         <DirectionProvider direction={direction}>
@@ -107,9 +140,15 @@ export default function SignUp() {
                   // helperText="Please specify the first name"
                   label={t("SignUp.InputFields.Name")}
                   name="name"
-                  onChange={(event) => {inputChangedHandler(event);}}
+                  onChange={(event) => {
+                    inputChangedHandler(event);
+                  }}
                   error={!signupForm.name.valid && signupForm.name.touched}
-                  helperText={!signupForm.name.valid && signupForm.name.touched ? signupForm.name.validationMsg : null}
+                  helperText={
+                    !signupForm.name.valid && signupForm.name.touched
+                      ? signupForm.name.validationMsg
+                      : null
+                  }
                   required
                   value={signupForm.name.value}
                   variant="outlined"
@@ -135,8 +174,14 @@ export default function SignUp() {
                   name="phoneNo"
                   required
                   onChange={inputChangedHandler}
-                  error={!signupForm.phoneNo.valid && signupForm.phoneNo.touched}
-                  helperText={!signupForm.phoneNo.valid && signupForm.phoneNo.touched ? t("SignUp.Validations.PhoneNumber") : null}
+                  error={
+                    !signupForm.phoneNo.valid && signupForm.phoneNo.touched
+                  }
+                  helperText={
+                    !signupForm.phoneNo.valid && signupForm.phoneNo.touched
+                      ? t("SignUp.Validations.PhoneNumber")
+                      : null
+                  }
                   type="number"
                   value={signupForm.phoneNo.value}
                   variant="outlined"
@@ -148,8 +193,14 @@ export default function SignUp() {
                   label={t("SignUp.InputFields.CivilID")}
                   name="civilId"
                   onChange={inputChangedHandler}
-                  error={!signupForm.civilId.valid && signupForm.civilId.touched}
-                  helperText={!signupForm.civilId.valid && signupForm.civilId.touched ? t("SignUp.Validations.CivilID") : null}
+                  error={
+                    !signupForm.civilId.valid && signupForm.civilId.touched
+                  }
+                  helperText={
+                    !signupForm.civilId.valid && signupForm.civilId.touched
+                      ? t("SignUp.Validations.CivilID")
+                      : null
+                  }
                   required
                   value={signupForm.civilId.value}
                   variant="outlined"
@@ -157,6 +208,7 @@ export default function SignUp() {
               </Grid>
               <Grid item md={12} xs={12}>
                 <PasswordInput
+                  passwordValue={signupForm.password.value}
                   valid={signupForm.password.valid}
                   touched={signupForm.password.touched}
                   showPassword={showPassword}
@@ -179,7 +231,7 @@ export default function SignUp() {
               {t("SignUp.InputFields.SignUp")}
             </Button>
 
-            <Grid container >
+            <Grid container>
               <Grid item>
                 <Link to="/signin">{t("SignUp.InputFields.SignIn")}</Link>
               </Grid>

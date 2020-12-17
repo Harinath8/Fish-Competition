@@ -4,6 +4,7 @@ export const TRANSLATIONS_EN = {
         "SignUp": "Sign Up",
         "SignIn": "Sign In",
         "Profile": "Profile",
+        "Logout": "Logout",
         "AddCompetition": "Add Competition",
     },
     "SignIn": {

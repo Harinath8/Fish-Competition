@@ -6,7 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DirectionProvider from "react-with-direction/dist/DirectionProvider";
 import { makeStyles, Paper } from "@material-ui/core";
@@ -51,7 +51,7 @@ const initialState = {
       required: true,
       isUserName: true,
       minLength: 3,
-      maxLength: 15,
+      // maxLength: 15,
     },
     validationMsg: "Name or Email Required!",
     valid: false,
@@ -71,10 +71,10 @@ const initialState = {
   },
 };
 
-const SignIn = (props) => {
+const SignIn = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { direction, authDispatch } = useContext(GlobalContext);
+  const { direction, authDispatch, authState: { auth: { token, error } } } = useContext(GlobalContext);
 
   const [loginForm, setLoginForm] = useState(initialState);
   const [showPassword, setShowPassword] = useState(false);
@@ -104,12 +104,7 @@ const SignIn = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
-    // i18n.on('languageChanged', language => {
-      
-    // })
-
-    if (!loginForm.username.valid && !loginForm.password.valid) {
+    if (!loginForm.username.valid || !loginForm.password.valid) {
         const updatedForm = {
             ...loginForm,
             username: { ...loginForm.username, touched: true, validationMsg: t("SignIn.Validations.NameOrEmail") },
@@ -118,7 +113,9 @@ const SignIn = (props) => {
         setLoginForm(updatedForm);
     }
 
-    // login({ username: loginForm.username.value, password: loginForm.password.value })(authDispatch);
+    if (loginForm.username.valid && loginForm.password.valid) {
+      login({ email: loginForm.username.value, password: loginForm.password.value })(authDispatch);
+    }
   };
 
   return (
@@ -130,6 +127,12 @@ const SignIn = (props) => {
           <Typography component="h1" variant="h5">
             {t("SignIn.InputFields.SignIn")}
           </Typography>
+
+          <Typography component="h1" variant="h5">
+            {error ? error : null}
+          </Typography>
+
+          {token ? <Redirect to="/profile" /> : null}
 
           <DirectionProvider direction={direction}>
             <form className={classes.form} onSubmit={submitHandler} noValidate>
@@ -145,11 +148,7 @@ const SignIn = (props) => {
                 autoFocus
                 error={!loginForm.username.valid && loginForm.username.touched}
                 onChange={inputChangedHandler}
-                helperText={
-                  !loginForm.username.valid && loginForm.username.touched
-                    ? loginForm.username.validationMsg
-                    : null
-                }
+                helperText={!loginForm.username.valid && loginForm.username.touched? loginForm.username.validationMsg: null}
               />
               <PasswordInput
                 valid={loginForm.password.valid}
@@ -173,7 +172,9 @@ const SignIn = (props) => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link to="/forgotPassword">{`${t("SignIn.InputFields.ForgotPassword")}`}</Link>
+                  <Link to="/forgotPassword">{`${t(
+                    "SignIn.InputFields.ForgotPassword"
+                  )}`}</Link>
                 </Grid>
               </Grid>
             </form>

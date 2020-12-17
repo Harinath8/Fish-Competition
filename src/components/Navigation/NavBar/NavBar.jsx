@@ -21,31 +21,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = ({ changeLanguage, direction, language }) => {
+const NavBar = ({ changeLanguage, direction, isAuthenticated }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  // console.log(i18next);
-  // console.log(i18next.language);
-
-  // console.log(language);
-
   let renderMenu = (
     <Fragment>
-      <Button color="inherit" onClick={() => changeLanguage()}>
-        {i18next.language === "en" ? "عربى" : "Enlish"}
-      </Button>
       <Link to="/signup" className={classes.link}>
         <Button color="inherit">{t("Navbar.SignUp")}</Button>
       </Link>
       <Link to="/signin" className={classes.link}>
         <Button color="inherit">{t("Navbar.SignIn")}</Button>
       </Link>
-      <Link to="/profile" className={classes.link}>
-        <Button color="inherit">{t("Navbar.Profile")}</Button>
-      </Link>
     </Fragment>
   );
+
+  if (isAuthenticated) {
+    renderMenu = (
+      <Fragment>
+        <Link to="/profile" className={classes.link}>
+          <Button color="inherit">{t("Navbar.Profile")}</Button>
+        </Link>
+        <Link to="/logout" className={classes.link}>
+          <Button color="inherit">{t("Navbar.Logout")}</Button>
+        </Link>
+      </Fragment>
+    );
+  }
 
   return (
     <DirectionProvider direction={direction}>
@@ -53,10 +55,13 @@ const NavBar = ({ changeLanguage, direction, language }) => {
         <Toolbar>
           <Link to="/home" className={classes.link}>
             <Typography variant="h6" noWrap>
-            {t("Navbar.AppName")}
+              {t("Navbar.AppName")}
             </Typography>
           </Link>
           <div className={classes.grow} />
+          <Button color="inherit" onClick={() => changeLanguage()}>
+            {i18next.language === "en" ? "عربى" : "Enlish"}
+          </Button>
           {renderMenu}
         </Toolbar>
       </AppBar>

@@ -7,7 +7,7 @@ export const checkValidity = (value, rules, translate) => {
     }
 
     if (rules.required) {
-        isValid = value.trim() !== '' && isValid;
+        isValid = value.trim() !== '' && isValid; 
     }
 
 

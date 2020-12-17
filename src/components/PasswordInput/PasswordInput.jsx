@@ -24,6 +24,7 @@ const passwordInput = (props) => {
       <OutlinedInput
         name="password"
         id="outlined-adornment-password"
+        value={props.passwordValue}
         type={props.showPassword ? "text" : "password"}
         onChange={(event) => props.setPassword(event)}
         endAdornment={

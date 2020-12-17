@@ -3,7 +3,7 @@ import axios from "axios";
 const AxiosInstance = (history = null) => {
   //   const baseURL = process.env.REACT_APP_BACKEND_URL;
 
-  const baseURL = "";
+  const baseURL = "http://192.168.0.173:8082/api";
 
   let headers = {};
 
@@ -16,33 +16,33 @@ const AxiosInstance = (history = null) => {
     headers,
   });
 
-  axiosInstance.interceptors.response.use(
-    (response) =>
-      new Promise((resolve, reject) => {
-        resolve(response);
-      }),
-    (error) => {
-      if (!error.response) {
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
-      }
+  // axiosInstance.interceptors.response.use(
+  //   (response) =>
+  //     new Promise((resolve, reject) => {
+  //       resolve(response);
+  //     }),
+  //   (error) => {
+  //     if (!error.response) {
+  //       return new Promise((resolve, reject) => {
+  //         reject(error);
+  //       });
+  //     }
 
-      if (error.response.status === 403) {
-        localStorage.removeItem("token");
+  //     if (error.response.status === 403) {
+  //       localStorage.removeItem("token");
 
-        if (history) {
-          history.push("/signin");
-        } else {
-          window.location = "/signin";
-        }
-      } else {
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
-      }
-    }
-  );
+  //       if (history) {
+  //         history.push("/signin");
+  //       } else {
+  //         window.location = "/signin";
+  //       }
+  //     } else {
+  //       return new Promise((resolve, reject) => {
+  //         reject(error);
+  //       });
+  //     }
+  //   }
+  // );
 
   return axiosInstance;
 };
