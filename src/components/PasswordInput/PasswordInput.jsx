@@ -10,7 +10,7 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const passwordInput = (props) => {
-  return (
+  return ( 
     <FormControl
       variant="outlined"
       margin="none"
@@ -18,12 +18,12 @@ const passwordInput = (props) => {
       required
       error={!props.valid && props.touched}
     >
-      <InputLabel htmlFor="outlined-adornment-password">
+      <InputLabel htmlFor={props.id}>
         {props.translate}
       </InputLabel>
       <OutlinedInput
-        name="password"
-        id="outlined-adornment-password"
+        name={props.name}
+        id={props.id}
         value={props.passwordValue}
         type={props.showPassword ? "text" : "password"}
         onChange={(event) => props.setPassword(event)}
@@ -32,17 +32,17 @@ const passwordInput = (props) => {
             <IconButton
               aria-label="toggle password visibility"
               onClick={props.togglePassword}
-              onMouseDown={props.mouseDownPassword}
+              // onMouseDown={props.mouseDownPassword}
               edge="end"
             >
               {props.showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>
         }
-        labelWidth={84}
+        labelWidth={120}
       />
       {!props.valid && props.touched ? (
-        <FormHelperText id="outlined-adornment-password">
+        <FormHelperText id={props.id}>
           {props.errorMsg}
         </FormHelperText>
       ) : null}

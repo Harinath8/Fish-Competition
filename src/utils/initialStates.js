@@ -27,6 +27,7 @@ export const signupFormInitialState = {
       validation: {
         required: true,
         isEmail: true,
+        maxLength: 32,
       },
       validationMsg: "Email Required!",
       valid: false,
@@ -47,7 +48,7 @@ export const signupFormInitialState = {
       validation: {
         required: true,
         isPassword: true,
-        minLength: 6,
+        minLength: 8,
         maxLength: 16,
       },
       validationMsg: "Password Required!",
@@ -59,3 +60,43 @@ export const signupFormInitialState = {
   formIsValid: false,
   // roles: ["USER"],
 };
+
+
+export const changePasswordInitialState = {
+  oldPassword: {
+    value: "",
+    validation: {
+      required: true,
+      isPassword: true,
+      minLength: 8,
+      maxLength: 16,
+    },
+    validationMsg: "Old Password Required!",
+    valid: false,
+    touched: false,
+  },
+  newPassword: {
+    value: "",
+    validation: {
+      required: true,
+      isPassword: true,
+      minLength: 8,
+      maxLength: 16,
+    },
+    validationMsg: "New Password Required!",
+    valid: false,
+    touched: false,
+  },
+  confirmPassword: {
+    value: "",
+    validation: {
+      required: true,
+      isPassword: true,
+      minLength: 8,
+      maxLength: 16,
+    },
+    validationMsg: "Confirm Password Required!",
+    valid: false,
+    touched: false,
+  },
+}

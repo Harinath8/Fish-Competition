@@ -161,7 +161,8 @@ export default function SignUp() {
                   name="email"
                   onChange={inputChangedHandler}
                   error={!signupForm.email.valid && signupForm.email.touched}
-                  helperText={!signupForm.email.valid && signupForm.email.touched ? t("SignUp.Validations.EmailAddress") : null}
+                  // helperText={!signupForm.email.valid && signupForm.email.touched ? t("SignUp.Validations.EmailAddress") : null}
+                  helperText={!signupForm.email.valid && signupForm.email.touched ? signupForm.email.validationMsg : null}
                   required
                   value={signupForm.email.value}
                   variant="outlined"
@@ -179,10 +180,15 @@ export default function SignUp() {
                   }
                   helperText={
                     !signupForm.phoneNo.valid && signupForm.phoneNo.touched
-                      ? t("SignUp.Validations.PhoneNumber")
+                      ? signupForm.phoneNo.validationMsg
                       : null
                   }
-                  type="number"
+                  // helperText={
+                  //   !signupForm.phoneNo.valid && signupForm.phoneNo.touched
+                  //     ? t("SignUp.Validations.PhoneNumber")
+                  //     : null
+                  // }
+                  // type="number"
                   value={signupForm.phoneNo.value}
                   variant="outlined"
                 />
@@ -208,6 +214,8 @@ export default function SignUp() {
               </Grid>
               <Grid item md={12} xs={12}>
                 <PasswordInput
+                  name="password"
+                  id="outlined-adornment-password"
                   passwordValue={signupForm.password.value}
                   valid={signupForm.password.valid}
                   touched={signupForm.password.touched}

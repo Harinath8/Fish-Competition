@@ -31,12 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ProfileDetails = ({
-  direction,
-  saveDetails,
-  profileDetails,
-  setProfileDetails,
-}) => {
+const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDetails }) => {
   const classes = useStyles();
 
   const handleChange = (event) => {

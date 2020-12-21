@@ -54,5 +54,10 @@ export const TRANSLATIONS_AR = {
         "ForgotPassword": "نسيت كلمة المرور الخاصة بك",
         "Description": "أدخل عنوان بريدك الإلكتروني أدناه وسنرسل لك رابطًا لإعادة تعيين كلمة المرور الخاصة بك.",
         "SendLink": "إرسال رابط إعادة التعيين"
-    }
+    },
+    "ChangePassword": {
+        "OldPassword": "Old Password",
+        "NewPassword": "New Password",
+        "ConfirmPassword": "Confirm Password"
+    },
 }

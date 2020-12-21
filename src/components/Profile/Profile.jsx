@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Profile = ({ direction, editProfile, profileDetails }) => {
+const Profile = ({ direction, editProfile, editPassword, profileDetails }) => {
   const classes = useStyles();
 
   return (
@@ -35,7 +35,10 @@ const Profile = ({ direction, editProfile, profileDetails }) => {
 
         <CardContent>
           <Box alignItems="center" display="flex" flexDirection="column">
-            <Avatar className={classes.avatar} src={profileDetails.profilePicture} />
+            <Avatar
+              className={classes.avatar}
+              src={profileDetails.profilePicture}
+            />
           </Box>
           <Divider />
 
@@ -52,6 +55,16 @@ const Profile = ({ direction, editProfile, profileDetails }) => {
           </Grid>
         </CardContent>
         <Divider />
+
+        <Box display="flex" justifyContent="flex-start" p={2}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => editPassword()}
+          >
+            Change Password
+          </Button>
+        </Box>
 
         <Box display="flex" justifyContent="flex-end" p={2}>
           <Button

@@ -54,5 +54,10 @@ export const TRANSLATIONS_EN = {
         "ForgotPassword": "Forgot your password?",
         "Description": "Enter your email address below and we'll send you a link to reset your password.",
         "SendLink": "Send reset link"
-    }
+    },
+    "ChangePassword": {
+        "OldPassword": "Old Password",
+        "NewPassword": "New Password",
+        "ConfirmPassword": "Confirm Password"
+    },
 }

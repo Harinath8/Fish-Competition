@@ -151,6 +151,8 @@ const SignIn = () => {
                 helperText={!loginForm.username.valid && loginForm.username.touched? loginForm.username.validationMsg: null}
               />
               <PasswordInput
+                name="password"
+                id="outlined-adornment-password"
                 valid={loginForm.password.valid}
                 touched={loginForm.password.touched}
                 showPassword={showPassword}
