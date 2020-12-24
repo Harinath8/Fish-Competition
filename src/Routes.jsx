@@ -6,6 +6,7 @@ import Signup from "./views/Signup/Signup";
 import UserProfile from "./views/UserProfile/UserProfile";
 import ForgotPassword from "./views/ForgotPassword/ForgotPassword";
 import Logout from "./views/Logout/Logout";
+import Competition from "./views/Competition/Competition";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -95,6 +96,7 @@ const Routes = ({ isAuthenticated }) => {
       <Switch>
         <Route exact path="/home" component={Home} />
         <Route path="/profile" component={UserProfile} />
+        <Route path="/competition" component={Competition} />
         <Route path="/logout" component={Logout} />
         <Redirect from="/" to="/home" />
         <Redirect to="/home" />

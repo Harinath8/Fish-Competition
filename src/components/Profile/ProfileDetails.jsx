@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -34,12 +34,25 @@ const useStyles = makeStyles((theme) => ({
 const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDetails }) => {
   const classes = useStyles();
 
+  const [prifilePic, setPrifilePic] = useState(profileDetails.userPicturePath);
+  const [civilIdPic, setCivilIdPic] = useState(profileDetails.civilIdPicturePath);
+  
   const handleChange = (event) => {
-    // event.target.files[0]
-
     let value = event.target.value;
-    if (event.target.name === "profilePicture")
-      value = URL.createObjectURL(event.target.files[0]);
+    if (event.target.name === "userPicturePath") {
+      // value = event.target.files[0];
+      value = event.target.files[0];
+
+      setPrifilePic(URL.createObjectURL(event.target.files[0]));
+      console.log(event.target.files[0])
+
+    } else if (event.target.name === "civilIdPicturePath") {
+      // value = event.target.files[0];
+      value = event.target.files[0];
+
+      setCivilIdPic(URL.createObjectURL(event.target.files[0]));
+      console.log(event.target.files[0].name)
+    }
 
     setProfileDetails({
       ...profileDetails,
@@ -54,8 +67,8 @@ const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDeta
           <CardHeader title="Edit Profile" />
           <Divider />
 
-          <Box alignItems="center" display="flex" flexDirection="column">
-            <Avatar className={classes.avatar} src={profileDetails.profilePicture} alt="profile Pic" />
+          <Box alignItems="center" display="flex" flexDirection="row" justifyContent="space-between">
+            <Avatar className={classes.avatar} src={prifilePic} alt="profile Pic" />
 
             <input
               accept="image/*"
@@ -63,7 +76,7 @@ const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDeta
               id="contained-button-file"
               multiple
               type="file"
-              name="profilePicture"
+              name="userPicturePath"
               onChange={handleChange}
             />
             <label htmlFor="contained-button-file">
@@ -81,7 +94,40 @@ const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDeta
               variant="contained"
               color="primary"
               className={classes.uploadPicture}
-              disabled={!profileDetails.profilePicture}
+              disabled={!profileDetails.userPicturePath}
+              startIcon={<DeleteIcon />}
+            >
+              Delete Picture
+            </Button>
+
+
+            <Avatar className={classes.avatar} src={civilIdPic} alt="CivilId Pic" />
+
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="civilId-file"
+              multiple
+              type="file"
+              name="civilIdPicturePath"
+              onChange={handleChange}
+            />
+            <label htmlFor="civilId-file">
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.uploadPicture}
+                component="span"
+              >
+                Civil ID Picture
+              </Button>
+            </label>
+
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.uploadPicture}
+              disabled={!profileDetails.civilIdPicturePath}
               startIcon={<DeleteIcon />}
             >
               Delete Picture
@@ -96,10 +142,10 @@ const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDeta
                   fullWidth
                   // helperText="Please specify the first name"
                   label="Name"
-                  name="name"
+                  name="userName"
                   onChange={handleChange}
                   required
-                  value={profileDetails.name}
+                  value={profileDetails.userName}
                   variant="outlined"
                 />
               </Grid>
@@ -119,10 +165,22 @@ const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDeta
                 <TextField
                   fullWidth
                   label="Phone Number"
-                  name="phoneNumber"
+                  name="telephone"
                   onChange={handleChange}
                   type="number"
-                  value={profileDetails.phoneNumber}
+                  value={profileDetails.telephone}
+                  variant="outlined"
+                />
+              </Grid>
+
+              <Grid item md={6} xs={12}>
+                <TextField
+                  fullWidth
+                  label="Civil Id"
+                  name="civilId"
+                  onChange={handleChange}
+                  type="number"
+                  value={profileDetails.civilId}
                   variant="outlined"
                 />
               </Grid>

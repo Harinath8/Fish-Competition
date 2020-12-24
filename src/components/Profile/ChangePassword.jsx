@@ -3,7 +3,7 @@ import { Box, Button, Divider, Grid, Container } from "@material-ui/core";
 import DirectionProvider from "react-with-direction/dist/DirectionProvider";
 import PasswordInput from "../PasswordInput/PasswordInput";
 import { useTranslation } from "react-i18next";
-import { changePasswordInitialState } from "../../utils/initialStates";
+import { changePasswordInitialState } from "../../utils/initialStates/changePassword";
 import { updateObject } from "../../utils/updateObject";
 import { checkValidity } from "../../utils/validations";
 
@@ -32,12 +32,40 @@ const ChangePassword = ({ direction, savePassword }) => {
         [event.target.name]: updateObject(passwordDetails[event.target.name], {
           value: event.target.value,
           valid: validation.valid,
-          validationMsg: validation.validationMsg,
+          validation: updateObject(passwordDetails[event.target.name].validation, {
+            validationMsg: validation.validationMsg,
+          }),
+          // validationMsg: validation.validationMsg,
           touched: true,
         }),
       });
       
       setPasswordDetails({ ...updatedPasswordDetails });
+  };
+
+  const confirmPasswordHandler = (event) => {
+    let valid;
+    let validationMsg;
+    if (passwordDetails.newPassword.value !== event.target.value) {
+      valid = false;
+      validationMsg = "Password not matched!";
+    } else {
+      valid = true;
+      validationMsg = "";
+    }
+
+    const updatedPasswordDetails = updateObject(passwordDetails, {
+      [event.target.name]: updateObject(passwordDetails[event.target.name], {
+        value: event.target.value,
+        valid: valid,
+        validation: updateObject(passwordDetails[event.target.name].validation, {
+            validationMsg: validationMsg,
+        }),
+        touched: true,
+      }),
+    });
+
+    setPasswordDetails({ ...updatedPasswordDetails });
   };
 
   const submitHandler = (event) => {
@@ -70,7 +98,7 @@ const ChangePassword = ({ direction, savePassword }) => {
                 valid={passwordDetails.oldPassword.valid}
                 touched={passwordDetails.oldPassword.touched}
                 showPassword={showOldPassword}
-                errorMsg={passwordDetails.oldPassword.validationMsg}
+                errorMsg={passwordDetails.oldPassword.validation.validationMsg}
                 setPassword={inputChangedHandler}
                 togglePassword={handleShowOldPassword}
                 translate={t("ChangePassword.OldPassword")}
@@ -85,7 +113,7 @@ const ChangePassword = ({ direction, savePassword }) => {
                 valid={passwordDetails.newPassword.valid}
                 touched={passwordDetails.newPassword.touched}
                 showPassword={showNewPassword}
-                errorMsg={passwordDetails.newPassword.validationMsg}
+                errorMsg={passwordDetails.newPassword.validation.validationMsg}
                 setPassword={inputChangedHandler}
                 togglePassword={handleShowNewPassword}
                 translate={t("ChangePassword.NewPassword")}
@@ -100,8 +128,8 @@ const ChangePassword = ({ direction, savePassword }) => {
                 valid={passwordDetails.confirmPassword.valid}
                 touched={passwordDetails.confirmPassword.touched}
                 showPassword={showConfirmPassword}
-                errorMsg={passwordDetails.confirmPassword.validationMsg}
-                setPassword={inputChangedHandler}
+                errorMsg={passwordDetails.confirmPassword.validation.validationMsg}
+                setPassword={confirmPasswordHandler}
                 togglePassword={handleShowConfirmPassword}
                 translate={t("ChangePassword.ConfirmPassword")}
               />

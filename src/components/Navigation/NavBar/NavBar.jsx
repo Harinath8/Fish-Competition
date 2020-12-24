@@ -42,6 +42,9 @@ const NavBar = ({ changeLanguage, direction, isAuthenticated }) => {
         <Link to="/profile" className={classes.link}>
           <Button color="inherit">{t("Navbar.Profile")}</Button>
         </Link>
+        <Link to="/competition" className={classes.link}>
+          <Button color="inherit">Competition</Button>
+        </Link>
         <Link to="/logout" className={classes.link}>
           <Button color="inherit">{t("Navbar.Logout")}</Button>
         </Link>

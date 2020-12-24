@@ -17,6 +17,7 @@ import { GlobalContext } from "../../context/Provider";
 import PasswordInput from "../../components/PasswordInput/PasswordInput";
 import { checkValidity } from "../../utils/validations";
 import { updateObject } from "../../utils/updateObject";
+import { signinFormInitialState } from "../../utils/initialStates/signinForm";
 
 const useStyles = makeStyles((theme) => ({
   maindiv: {
@@ -44,39 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialState = {
-  username: {
-    value: "",
-    validation: {
-      required: true,
-      isUserName: true,
-      minLength: 3,
-      // maxLength: 15,
-    },
-    validationMsg: "Name or Email Required!",
-    valid: false,
-    touched: false,
-  },
-  password: {
-    value: "",
-    validation: {
-      required: true,
-      isPassword: true,
-      minLength: 6,
-      maxLength: 16,
-    },
-    validationMsg: "Password Required!",
-    valid: false,
-    touched: false,
-  },
-};
-
 const SignIn = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const { direction, authDispatch, authState: { auth: { token, error } } } = useContext(GlobalContext);
 
-  const [loginForm, setLoginForm] = useState(initialState);
+  const [loginForm, setLoginForm] = useState(signinFormInitialState);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {

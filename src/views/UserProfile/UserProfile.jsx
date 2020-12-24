@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Container, Grid, makeStyles } from "@material-ui/core";
 
 import ProfileDetails from "../../components/Profile/Profile";
 import EditProfileDetails from "../../components/Profile/ProfileDetails";
 import { GlobalContext } from "../../context/Provider";
 import ChangePassword from "../../components/Profile/ChangePassword";
+import { getUserProfileData, updateNewPassword, updateUserProfile } from "../../api/profile";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   wrapper: {
     paddingTop: 78,
   },
@@ -15,16 +16,21 @@ const useStyles = makeStyles((theme) => ({
 const UserProfile = () => {
   const classes = useStyles();
 
-  const { direction } = useContext(GlobalContext);
+  const { direction, authState: { auth: { userId } } } = useContext(GlobalContext);
   const [editProfile, setEditProfile] = useState(false);
+
   const [profileData, setProfileData] = useState({
-    profilePicture: "",
-    name: "Harinath",
-    email: "harinath@nafaes.com",
-    phoneNumber: "1234567892",
+    userId: "",
+    userName: "",
+    userPicPath: "",
+    telephone: "",
+    email:"",
+    civilId: "",
+    civilIdPicPath: ""
   });
   const [changePassword, setChangePassword] = useState(false);
-  
+
+  // useEffect getUserProfileData
 
   const editProfileHandler = () => {
     setEditProfile(!editProfile);
@@ -34,14 +40,35 @@ const UserProfile = () => {
     setChangePassword(!changePassword);
   };
 
+  const getUserProfile = useCallback(async () => {
+    const data = await getUserProfileData(userId);
+    setProfileData({
+      userId: data.userId,
+      userName: data.userName,
+      email: data.email,
+      telephone: data.telephone,
+      userPicturePath: data.userPicturePath,
+      civilId: data.civilId,
+      civilIdPicturePath: data.civilIdPicturePath,
+    });
+  }, [userId]);
+
+  useEffect(() => {
+    getUserProfile(userId);
+  }, [getUserProfile, userId]);
+
   const saveDetailsHandler = () => {
     setEditProfile(!editProfile);
     console.log(profileData);
+
+    updateUserProfile(profileData);
   };
 
   const savePasswordHandler = (passwordDetails) => {
     setChangePassword(!changePassword);
     console.log(passwordDetails);
+
+    updateNewPassword(userId, passwordDetails);
   };
 
   let profile = (
@@ -63,13 +90,11 @@ const UserProfile = () => {
   );
 
   const updatePassword = (
-    <ChangePassword 
-    direction={direction}
-    savePassword={savePasswordHandler} />
+    <ChangePassword direction={direction} savePassword={savePasswordHandler} />
   );
 
-  if(editProfile) profile = editProfileDetails;
-  if(changePassword) profile = updatePassword;
+  if (editProfile) profile = editProfileDetails;
+  if (changePassword) profile = updatePassword;
 
   return (
     <Container className={classes.wrapper} maxWidth="lg">

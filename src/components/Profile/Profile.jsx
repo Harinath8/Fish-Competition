@@ -1,6 +1,6 @@
 import React from "react";
 // import PropTypes from "prop-types";
-// import clsx from "clsx";
+import clsx from "clsx";
 // import moment from "moment";
 import {
   Avatar,
@@ -12,15 +12,26 @@ import {
   makeStyles,
   Grid,
   CardHeader,
+  Typography,
 } from "@material-ui/core";
 import DirectionProvider from "react-with-direction/dist/DirectionProvider";
+import getInitials from '../../utils/getInitials';
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
     height: 100,
     width: 100,
     marginBottom: 22,
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
   },
 }));
 
@@ -34,23 +45,44 @@ const Profile = ({ direction, editProfile, editPassword, profileDetails }) => {
         <Divider />
 
         <CardContent>
-          <Box alignItems="center" display="flex" flexDirection="column">
+          <Box
+            alignItems="center"
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            {profileDetails.userPicturePath ? (
+              <Avatar
+              className={classes.avatar}
+              src={profileDetails.userPicturePath}
+            />
+            ) : (
+              <Avatar className={clsx(classes.orange, classes.avatar)}>
+            <Typography component="h1" variant="h2">
+              {getInitials(profileDetails.userName)}
+            </Typography>
+            </Avatar>
+            )}
+            
             <Avatar
               className={classes.avatar}
-              src={profileDetails.profilePicture}
+              src={profileDetails.civilIdPicturePath}
             />
           </Box>
           <Divider />
 
           <Grid container spacing={2}>
             <Grid item lg={12} md={6} xs={12}>
-              {`Name: ${profileDetails.name}`}
+              {`Civil Id: ${profileDetails.civilId}`}
+            </Grid>
+            <Grid item lg={12} md={6} xs={12}>
+              {`Name: ${profileDetails.userName}`}
             </Grid>
             <Grid item lg={12} md={6} xs={12}>
               {`Email Address: ${profileDetails.email}`}
             </Grid>
             <Grid item lg={12} md={6} xs={12}>
-              {`Phone Number: ${profileDetails.phoneNumber}`}
+              {`Phone Number: ${profileDetails.telephone}`}
             </Grid>
           </Grid>
         </CardContent>

@@ -38,6 +38,7 @@ const auth = (state, { type, payload }) => {
           loading: false,
           data: payload,
           token: payload.token,
+          userId: payload.userid
         },
       };
 

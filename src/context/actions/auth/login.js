@@ -14,15 +14,22 @@ export const loginSuccess = (data) => {
 };
 
 export const loginFail = (error) => {
-  if (error.data.status === 400 || 401) {
-    return {
-      type: LOGIN_ERROR,
-      payload: "Invalid Credentials",
-    };
+  if (error) {
+    if (error.data.status === 400 || 401) {
+      return {
+        type: LOGIN_ERROR,
+        payload: "Invalid Credentials",
+      };
+    } else {
+      return {
+        type: LOGIN_ERROR,
+        payload: error ? error.data.message : "COULD NOT CONNECT",
+      };
+    }
   } else {
     return {
       type: LOGIN_ERROR,
-      payload: error ? error.data.message : "COULD NOT CONNECT",
+      payload: "Failed to Connect",
     };
   }
 };
@@ -34,29 +41,29 @@ export const login = ({ email, password }) => (dispatch) => {
 
   axiosInstance()
     .post("/signin", { email, password })
-    .then((res) => {
-      localStorage.token = res.data.token;
-      dispatch(loginSuccess(res.data));
+    .then((response) => {
+      // localStorage.token = res.data.token;
+      localStorage.setItem('user', JSON.stringify({ token: response.data.token, userid: response.data.userid }));
+      dispatch(loginSuccess(response.data));
     })
     .catch((err) => {
+      console.log(err)
       dispatch(loginFail(err.response));
     });
 };
 
 export const userLogout = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem("user");
   return {
     type: LOGOUT_USER,
   };
 };
 
 export const authCheckState = (dispatch) => {
-  // const employee = localStorage.getItem('employee');
-  // const user = JSON.parse(localStorage.getItem('token'))
-  const token = localStorage.getItem("token");
-  if (!token) {
-    dispatch(userLogout());
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    dispatch(loginSuccess(user));
   } else {
-    dispatch(loginSuccess({ token }));
+    dispatch(userLogout());
   }
 };

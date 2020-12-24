@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { signupFormInitialState } from "../../utils/initialStates";
+import { signupFormInitialState } from "../../utils/initialStates/signupForm";
 import PasswordInput from "../../components/PasswordInput/PasswordInput";
 import { checkValidity } from "../../utils/validations";
 import { updateObject } from "../../utils/updateObject";
