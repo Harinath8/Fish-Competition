@@ -11,8 +11,8 @@ import {
 import { useTranslation } from "react-i18next";
 import DirectionProvider from "react-with-direction/dist/DirectionProvider";
 
-import { checkValidity } from "../../utils/validations";
-import { GlobalContext } from "../../context/Provider";
+import { GlobalContext } from "../../../context/Provider";
+import { checkValidity } from "../../../utils/validations";
 
 const useStyles = makeStyles((theme) => ({
     paper: {

@@ -12,11 +12,11 @@ import {
 } from "@material-ui/core";
 import DirectionProvider from "react-with-direction/dist/DirectionProvider";
 
-import { createCompetition, getFishTypes } from "../../api/competition";
-import { checkValidity } from "../../utils/validations";
-import { updateObject } from "../../utils/updateObject";
-import { competitionFormInitialState } from "../../utils/initialStates/competitionForm";
-import { GlobalContext } from "../../context/Provider";
+import { GlobalContext } from "../../../context/Provider";
+import { checkValidity } from "../../../utils/validations";
+import { updateObject } from "../../../utils/updateObject";
+import { competitionFormInitialState } from "../../../utils/initialStates/competitionForm";
+import { getFishTypes, createCompetition } from "../../../api/competition";
 
 const useStyles = makeStyles((theme) => ({
   form: {

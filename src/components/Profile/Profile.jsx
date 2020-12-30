@@ -1,7 +1,5 @@
-import React from "react";
-// import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-// import moment from "moment";
 import {
   Avatar,
   Box,
@@ -15,7 +13,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import DirectionProvider from "react-with-direction/dist/DirectionProvider";
-import getInitials from '../../utils/getInitials';
+import { getInitials } from '../../utils/getInitials';
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +35,32 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = ({ direction, editProfile, editPassword, profileDetails }) => {
   const classes = useStyles();
+  const [prifilePic, setPrifilePic] = useState();
+  const [civilIdPic, setCivilIdPic] = useState();
+
+  useEffect(() => {
+    let blob = new Blob([profileDetails.userPicturePath], {
+      type: "image/jpeg",
+    });
+    let reader = new FileReader();
+    reader.addEventListener("loadend", () => {
+      const contents = reader.result;
+      setPrifilePic(contents);
+    });
+    reader.readAsDataURL(blob);
+  }, [profileDetails.userPicturePath]);
+
+  useEffect(() => {
+    let blob = new Blob([profileDetails.civilIdPicturePath], {
+      type: "image/jpeg",
+    });
+    let reader = new FileReader();
+    reader.addEventListener("loadend", () => {
+      const contents = reader.result;
+      setCivilIdPic(contents);
+    });
+    reader.readAsDataURL(blob);
+  }, [profileDetails.civilIdPicturePath]);
 
   return (
     <DirectionProvider direction={direction}>
@@ -51,22 +75,19 @@ const Profile = ({ direction, editProfile, editPassword, profileDetails }) => {
             flexDirection="column"
             justifyContent="space-between"
           >
-            {profileDetails.userPicturePath ? (
-              <Avatar
-              className={classes.avatar}
-              src={profileDetails.userPicturePath}
-            />
+            {prifilePic ? (
+              <Avatar className={classes.avatar} src={prifilePic} />
             ) : (
               <Avatar className={clsx(classes.orange, classes.avatar)}>
-            <Typography component="h1" variant="h2">
-              {getInitials(profileDetails.userName)}
-            </Typography>
-            </Avatar>
+                <Typography component="h1" variant="h2">
+                  {getInitials(profileDetails.userName)}
+                </Typography>
+              </Avatar>
             )}
-            
+
             <Avatar
               className={classes.avatar}
-              src={profileDetails.civilIdPicturePath}
+              src={civilIdPic}
             />
           </Box>
           <Divider />

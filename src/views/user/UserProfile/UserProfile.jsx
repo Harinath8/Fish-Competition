@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Container, Grid, makeStyles } from "@material-ui/core";
 
-import ProfileDetails from "../../components/Profile/Profile";
-import EditProfileDetails from "../../components/Profile/ProfileDetails";
-import { GlobalContext } from "../../context/Provider";
-import ChangePassword from "../../components/Profile/ChangePassword";
-import { getUserProfileData, updateNewPassword, updateUserProfile } from "../../api/profile";
+import ProfileDetails from "../../../components/Profile/Profile";
+import EditProfileDetails from "../../../components/Profile/ProfileDetails";
+import { GlobalContext } from "../../../context/Provider";
+import ChangePassword from "../../../components/Profile/ChangePassword";
+import { getUserProfileData, updateNewPassword, updateUserProfile } from "../../../api/profile";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -29,8 +29,6 @@ const UserProfile = () => {
     civilIdPicPath: ""
   });
   const [changePassword, setChangePassword] = useState(false);
-
-  // useEffect getUserProfileData
 
   const editProfileHandler = () => {
     setEditProfile(!editProfile);

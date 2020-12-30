@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -34,9 +34,34 @@ const useStyles = makeStyles((theme) => ({
 const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDetails }) => {
   const classes = useStyles();
 
-  const [prifilePic, setPrifilePic] = useState(profileDetails.userPicturePath);
-  const [civilIdPic, setCivilIdPic] = useState(profileDetails.civilIdPicturePath);
+  const [prifilePic, setPrifilePic] = useState();
+  const [civilIdPic, setCivilIdPic] = useState();
   
+  useEffect(() => {
+    let blob = new Blob([profileDetails.userPicturePath], {
+      type: "image/jpeg",
+    });
+    let reader = new FileReader();
+    reader.addEventListener("loadend", () => {
+      const contents = reader.result;
+      setPrifilePic(contents);
+    });
+    reader.readAsDataURL(blob);
+  }, [profileDetails.userPicturePath]);
+
+  useEffect(() => {
+    let blob = new Blob([profileDetails.civilIdPicturePath], {
+      type: "image/jpeg",
+    });
+    let reader = new FileReader();
+    reader.addEventListener("loadend", () => {
+      const contents = reader.result;
+      setCivilIdPic(contents);
+    });
+    reader.readAsDataURL(blob);
+  }, [profileDetails.civilIdPicturePath]);
+
+
   const handleChange = (event) => {
     let value = event.target.value;
     if (event.target.name === "userPicturePath") {
@@ -71,7 +96,11 @@ const ProfileDetails = ({ direction, saveDetails, profileDetails, setProfileDeta
             <Avatar className={classes.avatar} src={prifilePic} alt="profile Pic" />
 
             <input
-              accept="image/*"
+              // accept="image/*"
+              // accept="image/x-png,image/gif,image/jpeg"
+              // accept=".png, .jpg, .jpeg"
+              
+              accept="image/x-png,image/jpeg"
               className={classes.input}
               id="contained-button-file"
               multiple
