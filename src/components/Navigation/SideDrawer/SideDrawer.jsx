@@ -12,7 +12,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import { Avatar, Collapse } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 const useStyles = makeStyles((theme) => ({
   sectionMobile: {
@@ -98,17 +98,17 @@ const SideDrawer = (props) => {
             <Link className={classes.link} to="/profile">
               <ListItem
                 button
-                key="Register"
+                key="Profile"
                 className={classes.nested}
                 onClick={props.closed}
               >
                 <ListItemIcon>
                   <ListAltIcon color="primary" />
                 </ListItemIcon>
-                <ListItemText primary="Timesheet" />
+                <ListItemText primary="Profile" />
               </ListItem>
             </Link>
-            <Link className={classes.link} to="/approveorUnapprove">
+            {/* <Link className={classes.link} to="/approveorUnapprove">
               <ListItem
                 button
                 className={classes.nested}
@@ -119,9 +119,18 @@ const SideDrawer = (props) => {
                 </ListItemIcon>
                 <ListItemText primary="Approve/Unapprove Timesheet" />
               </ListItem>
-            </Link>
+            </Link> */}
           </List>
         </Collapse>
+        
+        <Link className={classes.link} to="/ranks">
+          <ListItem button key="Ranks" onClick={props.closed}>
+            <ListItemIcon>
+              <EqualizerIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary="Ranks" />
+          </ListItem>
+        </Link>
         <Link className={classes.link} to="/logout">
           <ListItem button key="Login" onClick={props.closed}>
             <ListItemIcon>
